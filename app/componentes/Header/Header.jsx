@@ -19,8 +19,9 @@ export default function Header() {
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo */}
         <div className="text-2xl font-bold">
+          <img src="https://placehold.co/40x40/000000/FFFFFF/png?text=E" alt="Logo de ecomerce" className="h-8 w-8 inline-block mr-2 rounded-full" />
           <Link href="/" className="hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">
-            MiTienda
+            ecomerce
           </Link>
         </div>
 
