@@ -2,6 +2,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import { categories, products } from "./data";
 
@@ -48,20 +49,24 @@ export default function Home() {
               key={product.id}
               className="group flex flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white transition-shadow hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900"
             >
-              <div className="relative aspect-square overflow-hidden bg-zinc-100 dark:bg-zinc-800">
-                <div className="relative h-full w-full">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className="object-cover transition-transform group-hover:scale-105"
-                  />
+              <Link href={`/product/${product.id}`} className="cursor-pointer">
+                <div className="relative aspect-square overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+                  <div className="relative h-full w-full">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      className="object-cover transition-transform group-hover:scale-105"
+                    />
+                  </div>
                 </div>
-              </div>
+              </Link>
               <div className="flex flex-col gap-2 p-4">
-                <h3 className="text-lg font-medium text-black dark:text-white">
-                  {product.name}
-                </h3>
+                <Link href={`/product/${product.id}`}>
+                  <h3 className="text-lg font-medium text-black dark:text-white hover:underline">
+                    {product.name}
+                  </h3>
+                </Link>
                 <p className="text-sm text-zinc-600 dark:text-zinc-400">
                   {product.category}
                 </p>
