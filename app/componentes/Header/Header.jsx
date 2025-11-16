@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 // Componente para un ícono SVG genérico
-const Icon = ({ path, className = "w-6 h-6" }) => (
+const Icon = ({ path, className = "w-6 h-6" }) => ( // Eliminamos 'onClick' de las props de Icon, ya que el botón/enlace que lo envuelve manejará el clic
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
     <path strokeLinecap="round" strokeLinejoin="round" d={path} />
   </svg>
@@ -12,14 +12,27 @@ const Icon = ({ path, className = "w-6 h-6" }) => (
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado para simular el inicio de sesión
 
+  // Definimos los enlaces de navegación para el menú móvil
+  const navLinks = [
+    { name: 'Inicio', href: '/' },
+    { name: 'Categorías', href: '/categorias' }, // Ejemplo de enlace, puedes ajustarlo
+    { name: 'Ofertas', href: '/ofertas' },       // Ejemplo de enlace, puedes ajustarlo
+  ];
 
+  // Simula el inicio/cierre de sesión
+  const handleAuthClick = () => {
+    // Para el cierre de sesión, simplemente cambiamos el estado.
+    setIsLoggedIn(false);
+    setIsMenuOpen(false); // Cierra el menú móvil al hacer clic en el botón de autenticación
+  };
   return (
     <header className="bg-white dark:bg-black shadow-md text-black dark:text-white sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo */}
         <div className="text-2xl font-bold">
-          <img src="https://placehold.co/40x40/000000/FFFFFF/png?text=E" alt="Logo de ecomerce" className="h-8 w-8 inline-block mr-2 rounded-full" />
+          <img src="https://placehold.co/40x40/000000/FFFFFF/png?text=E" alt="Logo de ecomerce" className="h-20 w-20 inline-block mr-2 rounded-30%" />
           <Link href="/" className="hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">
             ecomerce
           </Link>
@@ -40,10 +53,23 @@ export default function Header() {
             </div>
           </div>
 
-          {/* Botón de Usuario */}
-          <button aria-label="Perfil de usuario" className="hidden md:block">
-            <Icon path="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-          </button>
+          {/* Botón de Iniciar Sesión / Cerrar Sesión y Perfil de Usuario (Desktop) */}
+          {isLoggedIn ? (
+            <>
+              <Link href="/perfil" aria-label="Perfil de usuario" className="hidden md:block">
+                <Icon path="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+              </Link>
+              <button onClick={handleAuthClick} className="hidden md:block px-3 py-1 rounded-md bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors text-sm">
+                Cerrar Sesión
+              </button>
+            </>
+          ) : (
+            <Link href="./login" className="hidden md:block px-3 py-1 rounded-md bg-black text-white dark:bg-white dark:text-black hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors text-sm">
+              Iniciar Sesión
+            </Link>
+          )}
+
+
 
           {/* Botón del Carrito */}
           <Link href="/carrito" className="relative" aria-label="Carrito de compras">
@@ -78,9 +104,22 @@ export default function Header() {
                 {link.name}
               </Link>
             ))}
-            <button aria-label="Perfil de usuario" className="md:hidden">
-              <Icon path="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-            </button>
+
+            {/* Botones de Autenticación Móvil */}
+            {isLoggedIn ? (
+              <>
+                <Link href="/perfil" aria-label="Perfil de usuario" onClick={() => setIsMenuOpen(false)}>
+                  <Icon path="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                </Link>
+                <button onClick={handleAuthClick} className="px-3 py-1 rounded-md bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors text-sm">
+                  Cerrar Sesión
+                </button>
+              </>
+            ) : (
+              <Link href="/iniciar-sesion" onClick={() => setIsMenuOpen(false)} className="px-3 py-1 rounded-md bg-black text-white dark:bg-white dark:text-black hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors text-sm">
+                Iniciar Sesión
+              </Link>
+            )}
           </nav>
         </div>
       )}
